@@ -1,0 +1,7 @@
+[
+  { "name": "Alice Alpha",  "email": "alice@test.dev",  "phone": "+14155550001" },
+  { "name": "Bob Bravo",    "email": "bob@test.dev",    "phone": "+14155550002" },
+  { "name": "Cara Charlie", "email": "cara@test.dev",   "phone": "+14155550003" },
+  { "name": "Dan Delta",    "email": "dan@test.dev",    "phone": "+14155550004" },
+  { "name": "Eve Echo",     "email": "eve@test.dev",    "phone": "+14155550005" }
+]
