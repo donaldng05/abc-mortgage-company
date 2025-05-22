@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Retell Web Call Tester</title>
+    <style>
+      body { font-family: sans-serif; padding: 2rem; }
+      input { width: 400px; margin-bottom: 1em; }
+      pre   { background: #f0f0f0; padding: 1em; }
+    </style>
+  </head>
+  <body>
+    <h1>Retell Web Call Tester</h1>
+
+    <label>Call ID:<br />
+      <input id="callId" placeholder="call_xxx…" />
+    </label><br/>
+
+    <label>Token:<br />
+      <input id="token" placeholder="cj_xxx…" />
+    </label><br/>
+
+    <button id="join">Join Call</button>
+
+    <h2>Log</h2>
+    <pre id="log"></pre>
+
+    <!-- Use the ES module build so we get a proper RetellWebClient class -->
+    <script type="module">
+  import { RetellWebClient } from "https://cdn.jsdelivr.net/npm/retell-client-js-sdk/+esm";
+
+  const logEl = document.getElementById("log");
+  const log = (msg) => { logEl.textContent += msg + "\n"; };
+
+  document.getElementById("join").onclick = async () => {
+    const callId = document.getElementById("callId").value.trim();
+    const token  = document.getElementById("token").value.trim();
+    log(`🔗 Starting call ${callId}…`);
+
+    try {
+      const client = new RetellWebClient();
+      // <-- use startCall, passing the accessToken exactly as the docs show
+      await client.startCall({ accessToken: token, callId });
+      log("✅ Call started — check mic & speaker now.");
+    } catch (err) {
+      log("❌ Error: " + err.message);
+    }
+  };
+</script>
+
+  </body>
+</html>
