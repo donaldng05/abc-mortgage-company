@@ -1,0 +1,597 @@
+{
+  "agent_id": "",
+  "channel": "voice",
+  "last_modification_timestamp": 1747834708530,
+  "agent_name": "Conversation Flow Agent",
+  "response_engine": {
+    "type": "conversation-flow",
+    "version": 3,
+    "conversation_flow_id": "conversation_flow_5e15190b8ce7"
+  },
+  "language": "en-US",
+  "opt_out_sensitive_data_storage": false,
+  "opt_in_signed_url": false,
+  "version": 3,
+  "is_published": true,
+  "version_title": "V3",
+  "post_call_analysis_model": "gpt-4o-mini",
+  "voice_id": "11labs-Cimo",
+  "max_call_duration_ms": 3600000,
+  "interruption_sensitivity": 0.9,
+  "voicemail_detection_timeout_ms": 30000,
+  "allow_user_dtmf": true,
+  "user_dtmf_options": {},
+  "retellLlmData": null,
+  "conversationFlow": {
+    "conversation_flow_id": "conversation_flow_5e15190b8ce7",
+    "version": 3,
+    "global_prompt": "You are Cimo, the friendly and professional outbound AI voice agent for ABC Mortgage Company. Your job is to:\n\n1. Greet each person by name using {{leadName}}.\n2. Pre-qualify them by asking about employment and confirming annual income against {{threshold}}.\n3. Smoothly hand them off to a live loan officer on success, or else offer to schedule a callback.\n4. When offering slots, always list exactly three openings using {{slot1}}, {{slot2}}, {{slot3}} on the first pass, and if needed {{slot4}}, {{slot5}}, {{slot6}} on a second pass.\n5. Once they pick one, confirm it back using {{chosenSlot}}.\n6. End each call politely, tailoring your final sentence to the outcome.\n\nAlways speak clearly, keep each prompt under 20 seconds, and use a warm, helpful tone.\n",
+    "nodes": [
+      {
+        "instruction": {
+          "type": "prompt",
+          "text": "Hi, this is ABC Mortgage calling for {{leadName}}. Am I speaking with {{leadName}}?"
+        },
+        "name": "Confirm Identity",
+        "edges": [
+          {
+            "destination_node_id": "node-1747796835069",
+            "id": "edge-1747796831300",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "yes"
+            }
+          },
+          {
+            "destination_node_id": "node-1747823409132",
+            "id": "edge-1747798672645",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "wrong person"
+            }
+          },
+          {
+            "destination_node_id": "node-1747826179618",
+            "id": "edge-1747798696053",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "not available"
+            }
+          }
+        ],
+        "start_speaker": "agent",
+        "finetune_transition_examples": [
+          {
+            "id": "fe-1747827339487-1",
+            "destination_node_id": "node-1747826179618",
+            "transcript": [
+              { "role": "user", "content": "they're not here" }
+            ]
+          },
+          {
+            "id": "fe-1747827339487-2",
+            "destination_node_id": "node-1747826179618",
+            "transcript": [
+              { "role": "user", "content": "not right now" }
+            ]
+          },
+          {
+            "id": "fe-1747827339487-3",
+            "destination_node_id": "node-1747826179618",
+            "transcript": [
+              { "role": "user", "content": "she's unavailable" }
+            ]
+          },
+          {
+            "id": "fe-1747827339487-4",
+            "destination_node_id": "node-1747826179618",
+            "transcript": [
+              { "role": "user", "content": "he's unavailable" }
+            ]
+          },
+          {
+            "id": "fe-1747827415902-1",
+            "destination_node_id": "node-1747823409132",
+            "transcript": [
+              { "role": "user", "content": "no, this isn’t {{leadName}}" }
+            ]
+          },
+          {
+            "id": "fe-1747827415902-2",
+            "destination_node_id": "node-1747823409132",
+            "transcript": [
+              { "role": "user", "content": "you’ve got the wrong number" }
+            ]
+          },
+          {
+            "id": "fe-1747827415902-3",
+            "destination_node_id": "node-1747823409132",
+            "transcript": [
+              { "role": "user", "content": "i’m not {{leadName}}" }
+            ]
+          }
+        ],
+        "id": "start-node-1747796795789",
+        "type": "conversation",
+        "display_position": {
+          "x": 214.85714285714283,
+          "y": 434.42857142857144
+        }
+      },
+      {
+        "name": "Ask if They have time",
+        "edges": [
+          {
+            "destination_node_id": "node-1747796851268",
+            "id": "edge-1747796835069",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "yes"
+            }
+          },
+          {
+            "destination_node_id": "node-1747796918252",
+            "id": "edge-1747821729046",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "no"
+            }
+          }
+        ],
+        "id": "node-1747796835069",
+        "type": "conversation",
+        "display_position": {
+          "x": 612.8571428571429,
+          "y": 189.99999999999997
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "Do you have a quick minute to discuss your interest in a mortgage?"
+        }
+      },
+      {
+        "name": "Ask Annual Income",
+        "edges": [
+          {
+            "destination_node_id": "node-1747796903108",
+            "id": "edge-1747796849949",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "income ≥ {{threshold}}"
+            }
+          },
+          {
+            "destination_node_id": "node-1747823487351",
+            "id": "edge-1747821275016",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "income < {{threshold}}"
+            }
+          }
+        ],
+        "id": "node-1747796849949",
+        "type": "conversation",
+        "display_position": {
+          "x": 1433.2946278286731,
+          "y": -78.32514755715137
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "Great. What is your approximate annual income?"
+        }
+      },
+      {
+        "name": "Ask Employment Status",
+        "edges": [
+          {
+            "destination_node_id": "node-1747796849949",
+            "id": "edge-1747796851268",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "employed"
+            }
+          },
+          {
+            "destination_node_id": "node-1747823487351",
+            "id": "edge-1747821241744",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "unemployed"
+            }
+          }
+        ],
+        "id": "node-1747796851268",
+        "type": "conversation",
+        "display_position": {
+          "x": 1032.0305959534974,
+          "y": 40.4855774379475
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "First, are you currently employed?"
+        }
+      },
+      {
+        "transfer_destination": {
+          "type": "predefined",
+          "number": "+12134447777"
+        },
+        "edge": {
+          "destination_node_id": "node-1747796918252",
+          "id": "edge-1747796903108",
+          "transition_condition": {
+            "type": "prompt",
+            "prompt": "Transfer failed"
+          }
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "Transferring your call now."
+        },
+        "name": "Warm Transfer to Loan Officer",
+        "id": "node-1747796903108",
+        "transfer_option": {
+          "type": "warm_transfer",
+          "option": {
+            "type": "prompt",
+            "prompt": ""
+          }
+        },
+        "type": "transfer_call",
+        "display_position": {
+          "x": 1903.5225779184948,
+          "y": 236.953752512845
+        }
+      },
+      {
+        "name": "Offer Callback after Transfer Failure",
+        "edges": [
+          {
+            "destination_node_id": "node-1747798154142",
+            "id": "edge-1747796918252",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "yes"
+            }
+          },
+          {
+            "destination_node_id": "node-1747823572595",
+            "id": "edge-1747798735053",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "no"
+            }
+          }
+        ],
+        "id": "node-1747796918252",
+        "type": "conversation",
+        "display_position": {
+          "x": 2337.224168999376,
+          "y": 64.88639825395984
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "It looks like our loan officer isn’t available right now. Would you like to schedule a callback?"
+        }
+      },
+      {
+        "tool_id": "tool-1747798151168",
+        "name": "Fetch Available Slots",
+        "edges": [
+          {
+            "destination_node_id": "node-1747798201493",
+            "id": "edge-1747798184667",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "always"
+            }
+          }
+        ],
+        "id": "node-1747798154142",
+        "type": "function",
+        "tool_type": "local",
+        "speak_during_execution": false,
+        "display_position": {
+          "x": 2899.3531495739653,
+          "y": 464.64086936704683
+        },
+        "wait_for_result": true
+      },
+      {
+        "name": "Offer Available Time Slots",
+        "edges": [
+          {
+            "destination_node_id": "node-1747823120579",
+            "id": "edge-1747798201493",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "none of these"
+            }
+          },
+          {
+            "destination_node_id": "node-1747798375342",
+            "id": "edge-1747798286837",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "user picks slot 1/ slot 2/ slot 3"
+            }
+          }
+        ],
+        "id": "node-1747798201493",
+        "type": "conversation",
+        "display_position": {
+          "x": 3291.057419053242,
+          "y": 15.581967390636748
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "Here are the next three open 30-minute windows I see:\n\n1. {{slot1}}\n\n2. {{slot2}}\n\n3. {{slot3}}\nWhich one works best for you?"
+        }
+      },
+      {
+        "tool_id": "tool-1747798372903",
+        "name": "Book Callback",
+        "edges": [
+          {
+            "destination_node_id": "node-1747798388629",
+            "id": "edge-1747798395836",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "always"
+            }
+          }
+        ],
+        "id": "node-1747798375342",
+        "type": "function",
+        "tool_type": "local",
+        "speak_during_execution": false,
+        "display_position": {
+          "x": 3660.4805424529986,
+          "y": 367.74315792002614
+        },
+        "wait_for_result": true
+      },
+      {
+        "name": "Confirm Booking",
+        "edges": [
+          {
+            "destination_node_id": "node-1747798420997",
+            "id": "edge-1747798388629",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "always"
+            }
+          }
+        ],
+        "id": "node-1747798388629",
+        "type": "conversation",
+        "display_position": {
+          "x": 4014.6270406479375,
+          "y": 418.63846304983764
+        },
+        "instruction": {
+          "type": "static_text",
+          "text": "All set! I’ve scheduled your callback for {{chosenSlot}}. You’ll receive a calendar invite shortly. Thanks, and have a great day!"
+        }
+      },
+      {
+        "name": "End Call",
+        "id": "node-1747798420997",
+        "type": "end",
+        "display_position": {
+          "x": 4383.6069000371435,
+          "y": 736.9440323445835
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "Politely end the call"
+        }
+      },
+      {
+        "name": "Offer Available Time Slots (2nd Pass)",
+        "edges": [
+          {
+            "destination_node_id": "node-1747823628620",
+            "id": "edge-1747823120579-dxfetmhs9",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "none of these"
+            }
+          },
+          {
+            "destination_node_id": "node-1747798375342",
+            "id": "edge-1747823120579-7fhwohghz",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "user picks slot 4/ slot 5/ slot 6"
+            }
+          }
+        ],
+        "id": "node-1747823120579",
+        "type": "conversation",
+        "display_position": {
+          "x": 3317.9187249313345,
+          "y": 1124.5566189813205
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "No problem—let me pull another three openings for you…”\n“Here they are:\n\n{{slot4}}\n\n{{slot5}}\n\n{{slot6}}\nWhich one works best?"
+        }
+      },
+      {
+        "name": "Ending 1 (Wrong Number)",
+        "edges": [
+          {
+            "destination_node_id": "node-1747798420997",
+            "id": "edge-1747823409132",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "end call"
+            }
+          }
+        ],
+        "id": "node-1747823409132",
+        "type": "conversation",
+        "display_position": {
+          "x": 780.7142857142858,
+          "y": 829.9999999999999
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "Oops—sorry, I must have the wrong number. Goodbye."
+        }
+      },
+      {
+        "name": "Ending 2 (Unqualified)",
+        "edges": [
+          {
+            "destination_node_id": "node-1747798420997",
+            "id": "edge-1747823487351",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "end call"
+            }
+          }
+        ],
+        "id": "node-1747823487351",
+        "type": "conversation",
+        "display_position": {
+          "x": 1680.523632868236,
+          "y": 425.5529341515636
+        },
+        "instruction": {
+          "type": "static_text",
+          "text": "Thanks for your time. Feel free to reach out if your situation changes. Goodbye."
+        }
+      },
+      {
+        "name": "Ending 3 (No Callback)",
+        "edges": [
+          {
+            "destination_node_id": "node-1747798420997",
+            "id": "edge-1747823572595",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "end call"
+            }
+          }
+        ],
+        "id": "node-1747823572595",
+        "type": "conversation",
+        "display_position": {
+          "x": 2917.0545709411504,
+          "y": 861.9324152067728
+        },
+        "instruction": {
+          "type": "static_text",
+          "text": "Alright, no problem. Thanks for your time—goodbye."
+        }
+      },
+      {
+        "name": "Ending 4 (No Slots)",
+        "edges": [
+          {
+            "destination_node_id": "node-1747798420997",
+            "id": "edge-1747823628620",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "end call"
+            }
+          }
+        ],
+        "id": "node-1747823628620",
+        "type": "conversation",
+        "display_position": {
+          "x": 3957.834690619271,
+          "y": 900.0350099307266
+        },
+        "instruction": {
+          "type": "static_text",
+          "text": "I’m sorry—we don’t have any openings in the next few days. Please feel free to call us back. Goodbye."
+        }
+      },
+      {
+        "name": "Offer Callback (Lead not here)",
+        "edges": [
+          {
+            "destination_node_id": "node-1747798154142",
+            "id": "edge-1747826179618",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "yes"
+            }
+          },
+          {
+            "destination_node_id": "node-1747823572595",
+            "id": "edge-1747826223637",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "no"
+            }
+          }
+        ],
+        "id": "node-1747826179618",
+        "type": "conversation",
+        "display_position": {
+          "x": 1066.9642857142853,
+          "y": 498.57142857142856
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "I understand they’re not here—would you like to schedule a callback?"
+        }
+      }
+    ],
+    "start_node_id": "start-node-1747796795789",
+    "start_speaker": "agent",
+    "tools": [
+      {
+        "tool_id": "tool-1747798151168",
+        "event_type_id": 2507850,
+        "cal_api_key": "cal_live_deda376b1db28843137a72c13ab8af09",
+        "timezone": "America/Los_Angeles",
+        "name": "check_calendar_availability",
+        "description": "When users ask for availability, check the calendar and provide available slots.",
+        "type": "check_availability_cal"
+      },
+      {
+        "tool_id": "tool-1747798372903",
+        "event_type_id": 2507850,
+        "cal_api_key": "cal_live_deda376b1db28843137a72c13ab8af09",
+        "timezone": "America/Los_Angeles",
+        "name": "book_appointment",
+        "description": "When users ask to book an appointment, book it on the calendar.",
+        "type": "book_appointment_cal"
+      },
+      {
+        "tool_id": "tool-1747822319332",
+        "timeout_ms": 5000,
+        "name": "Initialize-Slot-Counter",
+        "description": "Reset the slotAttempts counter to zero before we start fetching availability",
+        "type": "custom",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "slotAttempts": {
+              "type": "integer",
+              "description": "How many batches of slots we have already fetched"
+            }
+          },
+          "required": ["slotAttempts"]
+        },
+        "url": "https://run.mocky.io/v3/744375a8-5c53-4367-a081-0608c1a6fd0f"
+      }
+    ],
+    "model_choice": {
+      "type": "cascading",
+      "model": "gpt-4.1"
+    },
+    "begin_tag_display_position": {
+      "x": 122,
+      "y": 333
+    },
+    "is_published": true,
+    "knowledge_base_ids": []
+  },
+  "llmURL": null
+}
